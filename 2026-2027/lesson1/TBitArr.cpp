@@ -3,24 +3,33 @@
 
 using namespace std;
 
-size_t TBitArr::ul2d32(size_t num) {
+size_t TBitArr::calcArrL(size_t num) {
 	return (num + 31) >> 5;
 }
 
 TBitArr::TBitArr(size_t in_size) {
 	len = in_size;
-	arr_l = ul2d32(len);
+	arr_l = calcArrL(len);
 	arr = new unsigned int[arr_l];
 }
 
 TBitArr::TBitArr(string in_str) {
 	len = in_str.size();
-	arr_l = ul2d32(len);
+	arr_l = calcArrL(len);
 	arr = new unsigned int[arr_l];
 
 	for (size_t i = 0; in_str[i] == '0' || in_str[i] == '1'; i++) {
 		if (in_str[i] == '1') set(i);
 	}
+}
+
+TBitArr::TBitArr(TBitArr& in_bitarr) {
+    len = in_bitarr.len;
+    arr_l = in_bitarr.arr_l;
+    arr = new unsigned int[arr_l];
+    for (size_t i = 0; i < len; i++) {
+        if (in_bitarr.get(i)) this->set(i);
+    }
 }
 
 TBitArr::~TBitArr() {
@@ -52,7 +61,7 @@ void TBitArr::set(unsigned int FInd) {
 
 	LInd = getLInd(FInd);
 	HInd = getHInd(FInd);
-	
+
 	//cout << "---\n" << LInd << '|' << HInd << "\n---\n";
 
 	arr[HInd] = arr[HInd] | (1 << LInd);
@@ -82,13 +91,16 @@ bool TBitArr::get(unsigned int FInd) {
 	return (arr[HInd] & (1 << LInd)) != 0;
 }
 
+size_t TBitArr::getLen() const {
+    return len;
+}
 
 istream& operator>>(istream& stream, TBitArr& bitarr) {
 	size_t ptr = 0;
 	char in_ch;
 	string in_str;
 	stream >> in_str;
-	
+
 	while (ptr <= bitarr.len) {
 		in_ch = in_str[ptr];
 		if (in_ch == '1') bitarr.set(ptr++);
@@ -139,4 +151,3 @@ TBitArr TBitArr::operator~() {
 		res.arr[i] = ~arr[i];
 	return res;
 }
-

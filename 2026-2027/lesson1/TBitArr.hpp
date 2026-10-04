@@ -14,12 +14,13 @@ class TBitArr {
 	unsigned int getLInd(unsigned int el_num);
 	size_t getHInd(unsigned int el_num);
 
-	size_t ul2d32(size_t);
+	size_t calcArrL(size_t num);
 
 	public:
-	
+
 	TBitArr(size_t in_size);
 	TBitArr(string in_str);
+	TBitArr(TBitArr& in_bitarr);
 	~TBitArr();
 
 	TBitArr& operator=(const TBitArr&);
@@ -28,6 +29,8 @@ class TBitArr {
 	void unset(unsigned int);
 	bool get(unsigned int);
 
+	size_t getLen() const;
+
 	friend istream& operator>>(istream& stream, TBitArr&);
 	friend ostream& operator<<(ostream& stream, TBitArr&);
 
@@ -35,6 +38,7 @@ class TBitArr {
 	TBitArr operator&(const TBitArr& op2);
 	TBitArr operator|(const TBitArr& op2);
 	TBitArr operator~();
+
 };
 
 #endif
