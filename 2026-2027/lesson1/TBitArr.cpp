@@ -29,6 +29,7 @@ TBitArr::TBitArr(TBitArr& in_bitarr) {
     arr = new unsigned int[arr_l];
     for (size_t i = 0; i < len; i++) {
         if (in_bitarr.get(i)) this->set(i);
+        else this->unset(i);
     }
 }
 
