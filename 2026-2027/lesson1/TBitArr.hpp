@@ -11,8 +11,8 @@ class TBitArr {
 	size_t len;
 	unsigned int* arr;
 
-	unsigned int getLInd(unsigned int el_num);
-	size_t getHInd(unsigned int el_num);
+	unsigned int getLInd(unsigned int el_num) const;
+	size_t getHInd(unsigned int el_num) const;
 
 	size_t calcArrL(size_t num);
 
@@ -27,12 +27,12 @@ class TBitArr {
 
 	void set(unsigned int);
 	void unset(unsigned int);
-	bool get(unsigned int);
+	bool get(unsigned int) const;
 
 	size_t getLen() const;
 
 	friend istream& operator>>(istream& stream, TBitArr&);
-	friend ostream& operator<<(ostream& stream, TBitArr&);
+	friend ostream& operator<<(ostream& stream, const TBitArr&);
 
 	bool operator==(const TBitArr& op2);
 	TBitArr operator&(const TBitArr& op2);

@@ -46,8 +46,8 @@ TSet TSet::operator&(const TSet& op2) {
     return res;
 }
 TSet TSet::operator|(const TSet& op2) {
-    TSet res = *this;
-    res.bitarr = res.bitarr | op2.bitarr;
+    TBitArr res_bitarr = bitarr | op2.bitarr;
+    TSet res(res_bitarr);
     return res;
 }
 TSet TSet::operator~() {

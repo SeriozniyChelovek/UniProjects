@@ -11,6 +11,8 @@ TBitArr::TBitArr(size_t in_size) {
 	len = in_size;
 	arr_l = calcArrL(len);
 	arr = new unsigned int[arr_l];
+	for (size_t i = 0; i < arr_l; i++)
+	    arr[i] = 0;
 }
 
 TBitArr::TBitArr(string in_str) {
@@ -19,7 +21,8 @@ TBitArr::TBitArr(string in_str) {
 	arr = new unsigned int[arr_l];
 
 	for (size_t i = 0; in_str[i] == '0' || in_str[i] == '1'; i++) {
-		if (in_str[i] == '1') set(i);
+		if (in_str[i] == '1') this->set(i);
+		else this->unset(i);
 	}
 }
 
@@ -37,10 +40,10 @@ TBitArr::~TBitArr() {
 	delete[] arr;
 }
 
-unsigned int TBitArr::getLInd(unsigned int el_num) {
+unsigned int TBitArr::getLInd(unsigned int el_num) const {
 	return el_num & 31;
 }
-size_t TBitArr::getHInd(unsigned int el_num) {
+size_t TBitArr::getHInd(unsigned int el_num) const {
 	return el_num >> 5;
 }
 
@@ -80,7 +83,7 @@ void TBitArr::unset(unsigned int FInd) {
 	arr[HInd] = arr[HInd] & ~(1 << LInd);
 }
 
-bool TBitArr::get(unsigned int FInd) {
+bool TBitArr::get(unsigned int FInd) const {
 	if (FInd > len) return 0;
 
 	unsigned int LInd;
@@ -101,18 +104,18 @@ istream& operator>>(istream& stream, TBitArr& bitarr) {
 	char in_ch;
 	string in_str;
 	stream >> in_str;
-
 	while (ptr <= bitarr.len) {
 		in_ch = in_str[ptr];
 		if (in_ch == '1') bitarr.set(ptr++);
 		else if (in_ch == '0') bitarr.unset(ptr++);
 		else break;
 	}
+	for(; ptr <= bitarr.len; ptr++) bitarr.unset(ptr);
 	return stream;
 }
 
-ostream& operator<<(ostream& stream, TBitArr& bitarr) {
-	size_t el_amount = bitarr.len;
+ostream& operator<<(ostream& stream, const TBitArr& bitarr) {
+	size_t el_amount = 32;//bitarr.len; //TODO RETURN BACK!!!
 	for (size_t i = 0; i < el_amount; i++) {
 		stream << bitarr.get(i);
 	}
@@ -148,7 +151,11 @@ TBitArr TBitArr::operator|(const TBitArr& op2) {
 
 TBitArr TBitArr::operator~() {
 	TBitArr res(len);
-	for (size_t i = 0; i < arr_l; i++)
+	size_t i;
+	for (i = 0; i < arr_l; i++)
 		res.arr[i] = ~arr[i];
+	unsigned int mask = (1 << (res.len % 32)) - 1;
+	cout << '\n' << mask << '\n';
+	res.arr[i-1] &= mask;
 	return res;
 }
