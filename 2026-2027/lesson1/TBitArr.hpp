@@ -16,11 +16,14 @@ class TBitArr {
 
 	size_t calcArrL(size_t num);
 
-	public:
 
+
+	public:
+	void purify();
 	TBitArr(size_t in_size);
 	TBitArr(string in_str);
-	TBitArr(TBitArr& in_bitarr);
+	TBitArr(const TBitArr& in_bitarr);
+	TBitArr(TBitArr&& moved);
 	~TBitArr();
 
 	TBitArr& operator=(const TBitArr&);
@@ -34,7 +37,7 @@ class TBitArr {
 	friend istream& operator>>(istream& stream, TBitArr&);
 	friend ostream& operator<<(ostream& stream, const TBitArr&);
 
-	bool operator==(const TBitArr& op2);
+	bool operator==(const TBitArr& op2) const;
 	TBitArr operator&(const TBitArr& op2);
 	TBitArr operator|(const TBitArr& op2);
 	TBitArr operator~();

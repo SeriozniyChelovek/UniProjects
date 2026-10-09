@@ -26,12 +26,22 @@ TBitArr::TBitArr(string in_str) {
 	}
 }
 
-TBitArr::TBitArr(TBitArr& in_bitarr) {
+TBitArr::TBitArr(const TBitArr& in_bitarr) {
     len = in_bitarr.len;
     arr_l = in_bitarr.arr_l;
     arr = new unsigned int[arr_l];
     for (size_t i = 0; i < len; i++) {
         if (in_bitarr.get(i)) this->set(i);
+        else this->unset(i);
+    }
+}
+
+TBitArr::TBitArr(TBitArr&& moved) {
+    len = moved.len;
+    arr_l = moved.arr_l;
+    arr = new unsigned int[arr_l];
+    for (size_t i = 0; i < len; i++) {
+        if (moved.get(i)) this->set(i);
         else this->unset(i);
     }
 }
@@ -45,6 +55,11 @@ unsigned int TBitArr::getLInd(unsigned int el_num) const {
 }
 size_t TBitArr::getHInd(unsigned int el_num) const {
 	return el_num >> 5;
+}
+
+void TBitArr::purify() {
+    unsigned int mask = (1 << (len % 32)) - 1;
+	arr[arr_l-1] &= mask;
 }
 
 TBitArr& TBitArr::operator=(const TBitArr& op2) {
@@ -115,14 +130,14 @@ istream& operator>>(istream& stream, TBitArr& bitarr) {
 }
 
 ostream& operator<<(ostream& stream, const TBitArr& bitarr) {
-	size_t el_amount = 32;//bitarr.len; //TODO RETURN BACK!!!
+	size_t el_amount = bitarr.len;
 	for (size_t i = 0; i < el_amount; i++) {
 		stream << bitarr.get(i);
 	}
 	return stream;
 }
 
-bool TBitArr::operator==(const TBitArr& op2) {
+bool TBitArr::operator==(const TBitArr& op2) const {
 	if (len != op2.len) return false;
 	for (size_t i = 0; i < arr_l; i++)
 		if (arr[i] != op2.arr[i]) return false;
@@ -139,14 +154,16 @@ TBitArr TBitArr::operator&(const TBitArr& op2) {
 }
 
 TBitArr TBitArr::operator|(const TBitArr& op2) {
-	size_t max_len = len;
-	if (op2.len > max_len) max_len = op2.len;
-	TBitArr res(max_len);
-	for (size_t i = 0; i < arr_l; i++)
-		res.arr[i] = arr[i];
-	for (size_t i = 0; i < op2.arr_l; i++)
-		res.arr[i] = res.arr[i] | op2.arr[i];
-	return res;
+    size_t max_len = (len > op2.len) ? len : op2.len;
+    TBitArr res(max_len);
+    for (size_t i = 0; i < res.arr_l; i++) {
+        unsigned int val1 = (i < arr_l) ? arr[i] : 0;
+        unsigned int val2 = (i < op2.arr_l) ? op2.arr[i] : 0;
+        res.arr[i] = val1 | val2;
+    }
+    res.len = max_len;
+    res.purify();
+    return res;
 }
 
 TBitArr TBitArr::operator~() {
@@ -154,8 +171,6 @@ TBitArr TBitArr::operator~() {
 	size_t i;
 	for (i = 0; i < arr_l; i++)
 		res.arr[i] = ~arr[i];
-	unsigned int mask = (1 << (res.len % 32)) - 1;
-	cout << '\n' << mask << '\n';
-	res.arr[i-1] &= mask;
+	res.purify();
 	return res;
 }

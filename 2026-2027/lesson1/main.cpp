@@ -4,71 +4,87 @@
 
 using namespace std;
 
+template <typename T> void printAll(T* ptr, size_t len) {
+    for (size_t i = 0; i < len; i++)
+        cout << i << " : " << *ptr[i] << endl;
+}
+
 int main() {
-    cout << "---\nДемонстрация TBitArr\n---\n";
-	size_t bl;
-	cout << "Введите размер битового поля" << endl;
-	cin >> bl;
 
-	TBitArr bita(bl);
-	TBitArr res(bl);
+    // Все ф-ии TBitArr
+    //
+    cout << "TBitArr\n";
+	TBitArr b0("10001"), b1(60), b2(10);
 
-	bool resb;
+	b1.set(33);
 
-	cout << "Введите строку нулей и единиц в качестве содержания битового поля" << endl;
-	cin >> bita;
-	cout << endl << "Вы ввели:" << endl;
-	cout << bita << endl;
+	TBitArr* barrs[3] = {&b0, &b1, &b2};
+	printAll<TBitArr*>(barrs, 3);
 
-	TBitArr B(bl);
-	resb = bita == B;
-	cout << "Введённое битовое поле - пустое? : " << resb << endl;
+	b0.set(1);
+	b0.set(2);
+	b0.set(4);
+	b0.unset(0);
+	cout << endl;
+	printAll<TBitArr*>(barrs, 3);
 
-	TBitArr chess5 = (string)"1010101010";
-	cout << "chess5: " << endl << chess5 << endl;
+	cout << "b0.get(2) : " << b0.get(2) << endl;
+	cout << "b0.get(3) : " << b0.get(3) << endl;
 
-	res = bita & chess5;
-	cout << "Input & chess5: " << endl << res << endl;
+    b2 = b0 & b1;
+    cout << endl;
+    cout << "b2 = b0 & b1" << endl;
+    printAll<TBitArr*>(barrs, 3);
 
-	res = bita | chess5;
-	cout << "Input | chess5: " << endl << res << endl;
+    b2 = b0 | b1;
+    cout << endl;
+    cout << "b2 = b0 | b1" << endl;
+    printAll<TBitArr*>(barrs, 3);
 
-	res = ~bita;
+    b2 = ~b1;
+    cout << endl;
+    cout << "b2 = ~b1" << endl;
+    printAll<TBitArr*>(barrs, 3);
 
-	cout << "~Input: " << endl << res << endl;
+    cout << "\n\nTSet\n";
 
-	cout << "\n---\nДемонстрация TSet\n---\n";
+    // Все ф-ии TSet
+    //
 
-    //TBitArr bitarr("110011");
-	//TSet set1(bitarr);
-	TSet set1(bita);
-	cout << "set1: " << set1 << " (Составлен из первого введённого битового поля)" << endl;
-	TSet set2(6);
+    TSet s0(b0), s1(b1), s2(b2);
 
-	set2.add(3);
-	cout << "set2: " << set2 << endl;
-	cout << "Есть ли 3 в set2? : " << set2.isIn(3) << endl;
-	cout << "Есть ли 4 в set2? : " << set2.isIn(4) << endl;
+	TSet* sets[3] = {&s0, &s1, &s2};
+	printAll<TSet*>(sets, 3);
 
-	set2.add(5);
-	cout << "Добавить 5 в set2 : " << set2 << endl;
-	set2.add(0);
-	cout << "Добавить 0 в set2 : " << set2 << endl;
-	set2.del(3);
-	cout << "Удалить 3 из set2 : " << set2 << endl;
+    s0.add(3);
+    s0.add(2);
+    s0.del(1);
 
-	TBitArr reverse = set2;
-	cout << "(TBitArr)set2 : " << reverse << endl;
+    cout << endl;
+    printAll<TSet*>(sets, 3);
 
-	TSet set3 = set1 & set2;
-	cout << "set1 & set2 : " << set3 << endl;
+    cout << "s0.isIn(0) : " << s0.isIn(0) << endl;
+	cout << "s0.isIn(2) : " << s0.isIn(2) << endl;
 
-	set3 = set1 | set2;
-	cout << "set1 | set2 : " << set3 << endl;
+	TBitArr buffer(10);
+	buffer = s0;
+	cout << "\n(TBitArr)s0 = " << buffer << endl;
 
-	set3 = ~set1;
-	cout << "set1 : " << set1 << endl;
-	cout << "~set1 : " << set3 << endl;
+    s2 = s0 & s1;
+    cout << endl;
+    cout << "s2 = s0 & s1" << endl;
+    printAll<TSet*>(sets, 3);
+
+    s2 = s0 | s1;
+    cout << endl;
+    cout << "s2 = s0 | s1" << endl;
+    printAll<TSet*>(sets, 3);
+
+    cout << endl;
+    b0 = s0;
+    b1 = s1;
+    b2 = s2;
+    printAll<TBitArr*>(barrs, 3);
 
 	return 0;
 }

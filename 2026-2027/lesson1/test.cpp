@@ -5,23 +5,30 @@
 using namespace std;
 
 int main() {
+	cout << "\n---\nДемонстрация TSet\n---\n";
 
-    TBitArr b1("101010");
-    TBitArr b2("1111");
+    TBitArr bitarr("0");
+	TSet set1(bitarr);
+	cout << "set1: " << set1 << endl;
+	TSet set2(6);
 
-    TSet s1(b1);
-    TSet s2(b2);
-    TSet s3(10);
+	set2.add(3);
+	set2.add(5);
+	set2.add(0);
+	set2.del(3);
 
+	cout << "set2: " << set2 << endl;
 
-    cout << s1.getMax() << ' ' << s1 << endl;
-    cout << s2.getMax() << ' ' << s2 << endl;
+	cout << "set1: " << set1 << " set2: " << set2 << endl;
+	TBitArr reverse = set2;
+	cout << "(TBitArr)set2 : " << reverse << endl;
 
-    s3 = s1 | s2;
+	TSet set3 = set1 & set2;
+	cout << "set1 & set2 : " << set3 << endl;
 
-    cout << s3.getMax() << ' ' << s3 << endl;
-    TBitArr bitarr3 = s3;
-    cout << bitarr3 << endl;
+	cout << "set1: " << set1 << " set2: " << set2 << endl;
+	set3 = set1 | set2;
+	cout << "set1 | set2 : " << set3 << endl;
 
 	return 0;
 }

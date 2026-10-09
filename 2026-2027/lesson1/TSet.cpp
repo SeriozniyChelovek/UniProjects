@@ -4,8 +4,15 @@
 using namespace std;
 
 TSet::TSet(const size_t& in_max_el) : bitarr(in_max_el), max_el(in_max_el) {};
-TSet::TSet(TBitArr& in_bitarr) : bitarr(in_bitarr), max_el(in_bitarr.getLen()) {};
-TSet::TSet(TSet& in_set) : bitarr(in_set.bitarr), max_el(in_set.getMax()) {};
+TSet::TSet(const TBitArr& in_bitarr) : bitarr(in_bitarr), max_el(in_bitarr.getLen()) {};
+TSet::TSet(const TSet& in_set) : bitarr(in_set.bitarr), max_el(in_set.getMax()) {};
+TSet::TSet(TSet&& moved) : bitarr(moved.bitarr), max_el(moved.getMax()) {};
+
+TSet& TSet::operator=(const TSet& moved) {
+    bitarr = moved.bitarr;
+    max_el = moved.max_el;
+    return *this;
+}
 
 void TSet::add(size_t el) {
     bitarr.set(el);
@@ -25,6 +32,7 @@ size_t TSet::getMax() const {
 
 TSet::operator TBitArr() {
     TBitArr res = bitarr;
+    res.purify();
     return res;
 }
 
@@ -46,8 +54,10 @@ TSet TSet::operator&(const TSet& op2) {
     return res;
 }
 TSet TSet::operator|(const TSet& op2) {
-    TBitArr res_bitarr = bitarr | op2.bitarr;
-    TSet res(res_bitarr);
+    TSet lop2 = op2;
+    TBitArr b1(*this), b2(lop2);
+    TBitArr bres = b1 | b2;
+    TSet res(bres);
     return res;
 }
 TSet TSet::operator~() {

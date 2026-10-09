@@ -13,8 +13,11 @@ class TSet {
 	public:
 
 	TSet(const size_t& in_max_el);
-	TSet(TBitArr& in_bitarr);
-	TSet(TSet& in_set);
+	TSet(const TBitArr& in_bitarr);
+	TSet(const TSet& in_set);
+	TSet(TSet&& moved);
+
+	TSet& operator=(const TSet&);
 
 	void add(size_t el);
 	void del(size_t el);
