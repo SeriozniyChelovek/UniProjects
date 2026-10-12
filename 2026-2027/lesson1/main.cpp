@@ -14,9 +14,9 @@ int main() {
     // Все ф-ии TBitArr
     //
     cout << "TBitArr\n";
-	TBitArr b0("10001"), b1(60), b2(10);
+    TBitArr b0("10001"), b1(60), b2(100);
 
-	b1.set(33);
+    b1.set(33);
 
 	TBitArr* barrs[3] = {&b0, &b1, &b2};
 	printAll<TBitArr*>(barrs, 3);
@@ -25,6 +25,9 @@ int main() {
 	b0.set(2);
 	b0.set(4);
 	b0.unset(0);
+
+	cout << "\nb0 : +1 +2 +4 -0\n";
+
 	cout << endl;
 	printAll<TBitArr*>(barrs, 3);
 
@@ -53,12 +56,14 @@ int main() {
 
     TSet s0(b0), s1(b1), s2(b2);
 
-	TSet* sets[3] = {&s0, &s1, &s2};
-	printAll<TSet*>(sets, 3);
+    TSet* sets[3] = {&s0, &s1, &s2};
+    printAll<TSet*>(sets, 3);
 
     s0.add(3);
     s0.add(2);
     s0.del(1);
+
+    cout << "\ns0: +3 +2 -1\n";
 
     cout << endl;
     printAll<TSet*>(sets, 3);
