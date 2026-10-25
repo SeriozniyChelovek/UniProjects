@@ -8,12 +8,20 @@ using namespace std;
 template <typename T>
 class TVector {
 
-    size_t length; // max_index = length - 1
-    T* arr;
+    protected:
+        size_t length; // max_index = length - 1
+        T* arr;
 
     public:
         TVector(size_t o_length = 1) : length(o_length) {
             arr = new T[length];
+        };
+
+        TVector(size_t o_length, const T &o_value) : length(o_length) { // Конструктор с заполнением. Нужен для работы TMatrix
+            arr = new T[length];
+            for (size_t i = 0; i < length; i++) {
+                arr[i] = o_value;
+            }
         };
 
         TVector(TVector<T> const &o_vec) : length(o_vec.length) {
@@ -42,9 +50,20 @@ class TVector {
             return arr[index];
         };
 
+        TVector<T>& operator=(const TVector<T>& op2) {
+            length = op2.length;
+            delete[] arr;
+            arr = new T[length];
+            for (size_t i = 0; i < length; i++) {
+                arr[i] = op2.arr[i];
+            }
+            return *this;
+        };
+
         TVector<T>& operator=(TVector<T>&& op2) {
             length = op2.length;
             delete[] arr;
+            arr = new T[length];
             for (size_t i = 0; i < length; i++) {
                 arr[i] = op2.arr[i];
             }
@@ -54,10 +73,9 @@ class TVector {
         bool operator==(TVector<T> op2) const {
             if (length != op2.length) return false;
             for (size_t i = 0; i < length; i++) {
-                if (arr[i] != op2.arr[i])
+                if (!(arr[i] == op2.arr[i]))
                     return false;
             }
-            return true;
         };
 
         TVector<T> operator+(TVector<T> op2) const {
