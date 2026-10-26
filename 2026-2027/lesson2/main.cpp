@@ -26,24 +26,23 @@ int main() {
     cout << "v1 * 2  = " << v1 * 2 << endl;
 
     cout << "v2 == v1: " << (v2 == v1) << endl;
-    v2[0] = 100;
 
     cout << "\nTMatrix\n" << endl;
 
     TMatrix<int> Z(2, 3);
-    cout << "Z(2,3) = " << Z << endl;
+    cout << "Z(2,3) :\n" << Z << endl;
 
     int aData[4] = {1, 2, 3, 4};
     int bData[4] = {5, 6, 7, 8};
     TMatrix<int> A(2, 2), B(2, 2);
     fillMatrix(A, aData);
     fillMatrix(B, bData);
-    cout << "A = " << A << "\nB = " << B << endl;
+    cout << "A :\n" << A << "\n\nB :\n" << B << endl;
 
-    cout << "A + B = " << A + B << endl;
-    cout << "A - B = " << A - B << endl;
-    cout << "A * B = " << A * B << endl;
-    cout << "A * 3 = " << A * 3 << endl;
+    cout << "A + B :\n" << A + B << endl;
+    cout << "A - B :\n" << A - B << endl;
+    cout << "A * B :\n" << A * B << endl;
+    cout << "A * 3 :\n" << A * 3 << endl;
     cout << "A == A: " << (A == A) << endl;
     cout << "A != B: " << (A != B) << endl;
 

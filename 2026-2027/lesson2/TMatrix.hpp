@@ -97,6 +97,16 @@ class TMatrix : public TVector<TVector<T>> {
             return res;
         };
 
+        friend ostream& operator<<(ostream& stream, const TMatrix<T>& op2) {
+            for (size_t i = 0; i < op2.rows; i++) {
+                for (size_t j = 0; j < op2.cols; j++)
+                    stream << op2.arr[i][j] << ' ';
+                stream << endl;
+            }
+
+            return stream;
+        };
+
 };
 
 #endif
