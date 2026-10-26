@@ -17,7 +17,7 @@ class TVector {
             arr = new T[length];
         };
 
-        TVector(size_t o_length, const T &o_value) : length(o_length) { // Конструктор с заполнением. Нужен для работы TMatrix
+        TVector(size_t o_length, const T &o_value) : length(o_length) {
             arr = new T[length];
             for (size_t i = 0; i < length; i++) {
                 arr[i] = o_value;
@@ -29,6 +29,10 @@ class TVector {
             for (size_t i = 0; i < length; i++) {
                 arr[i] = o_vec.arr[i];
             }
+        };
+
+        TVector(TVector<T>&& o_vec) : length(o_vec.length) {
+            arr = o_vec.arr;
         };
 
         TVector(T* o_arr, size_t o_length) : length(o_length) {
@@ -61,16 +65,13 @@ class TVector {
         };
 
         TVector<T>& operator=(TVector<T>&& op2) {
-            length = op2.length;
             delete[] arr;
-            arr = new T[length];
-            for (size_t i = 0; i < length; i++) {
-                arr[i] = op2.arr[i];
-            }
+            arr = op2.arr;
+            length = op2.length;
             return *this;
         };
 
-        bool operator==(TVector<T> op2) const {
+        bool operator==(const TVector<T>& op2) const {
             if (length != op2.length) return false;
             for (size_t i = 0; i < length; i++) {
                 if (!(arr[i] == op2.arr[i]))
@@ -79,9 +80,13 @@ class TVector {
             return true;
         };
 
-        TVector<T> operator+(TVector<T> op2) const {
+        bool operator!=(const TVector<T>& op2) const {
+            return !(*this == op2);
+        };
+
+        TVector<T> operator+(const TVector<T>& op2) const {
             if (length != op2.length) {
-                throw "Cannot sum up vectors with diffetent length";
+                throw "Cannot sum up vectors with different length";
             }
             TVector<T> res(*this);
             for (size_t i = 0; i < length; i++) {
@@ -90,12 +95,12 @@ class TVector {
             return res;
         };
 
-        T operator*(TVector<T> op2) const {
+        T operator*(const TVector<T>& op2) const {
             if (length != op2.length) {
-                throw "Cannot multiply vectors with diffetent length";
+                throw "Cannot multiply vectors with different length";
             }
-            T res = arr[0] * op2.arr[0];
-            for (size_t i = 1; i < length; i++) {
+            T res = T();
+            for (size_t i = 0; i < length; i++) {
                 res = res + arr[i] * op2.arr[i];
             }
             return res;
