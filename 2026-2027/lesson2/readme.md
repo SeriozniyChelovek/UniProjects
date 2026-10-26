@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Статус
 
 Вектор и матрица функционируют полностью. Тесты: `tests.cpp` — все пройдены.
@@ -30,3 +31,6 @@
 g++ -std=c++17 -Wall -Wextra main.cpp -o main
 g++ -std=c++17 -Wall -Wextra tests.cpp -o tests
 ```
+=======
+Всё работает
+>>>>>>> main
