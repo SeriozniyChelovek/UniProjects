@@ -14,10 +14,10 @@ class TVector {
 
     public:
         TVector(size_t o_length = 1) : length(o_length) {
-            arr = new T[length](); // value-init: элементы T() = 0
+            arr = new T[length];
         };
 
-        TVector(size_t o_length, const T &o_value) : length(o_length) { // Конструктор с заполнением. Нужен для работы TMatrix
+        TVector(size_t o_length, const T &o_value) : length(o_length) {
             arr = new T[length];
             for (size_t i = 0; i < length; i++) {
                 arr[i] = o_value;
@@ -33,8 +33,6 @@ class TVector {
 
         TVector(TVector<T>&& o_vec) : length(o_vec.length) {
             arr = o_vec.arr;
-            o_vec.arr = nullptr;
-            o_vec.length = 0;
         };
 
         TVector(T* o_arr, size_t o_length) : length(o_length) {
@@ -52,40 +50,24 @@ class TVector {
             return length;
         };
 
-        T& operator[](size_t index) {
-            if (index >= length) {
-                throw "Incorrect index";
-            }
-            return arr[index];
-        };
-
-        const T& operator[](size_t index) const {
-            if (index >= length) {
-                throw "Incorrect index";
-            }
+        T& operator[](size_t index) const {
             return arr[index];
         };
 
         TVector<T>& operator=(const TVector<T>& op2) {
-            if (this != &op2) {
-                length = op2.length;
-                delete[] arr;
-                arr = new T[length];
-                for (size_t i = 0; i < length; i++) {
-                    arr[i] = op2.arr[i];
-                }
+            length = op2.length;
+            delete[] arr;
+            arr = new T[length];
+            for (size_t i = 0; i < length; i++) {
+                arr[i] = op2.arr[i];
             }
             return *this;
         };
 
         TVector<T>& operator=(TVector<T>&& op2) {
-            if (this != &op2) {
-                delete[] arr;
-                arr = op2.arr;
-                length = op2.length;
-                op2.arr = nullptr;
-                op2.length = 0;
-            }
+            delete[] arr;
+            arr = op2.arr;
+            length = op2.length;
             return *this;
         };
 
@@ -96,6 +78,10 @@ class TVector {
                     return false;
             }
             return true;
+        };
+
+        bool operator!=(const TVector<T>& op2) const {
+            return !(*this == op2);
         };
 
         TVector<T> operator+(const TVector<T>& op2) const {
