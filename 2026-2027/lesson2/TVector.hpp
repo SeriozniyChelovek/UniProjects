@@ -76,6 +76,7 @@ class TVector {
                 if (!(arr[i] == op2.arr[i]))
                     return false;
             }
+            return true;
         };
 
         TVector<T> operator+(TVector<T> op2) const {
