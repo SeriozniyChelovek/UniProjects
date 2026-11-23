@@ -17,6 +17,25 @@ class TQueue {
         TQueue(size_t in_arr_l = 1) : arr_l(in_arr_l), head(0), tail(0) {
             arr = new T[arr_l];
         };
+        TQueue(const TQueue& other) : arr_l(other.arr_l), head(other.head), tail(other.tail), _last_push(other._last_push) {
+            arr = new T[arr_l];
+            for (size_t i = 0; i < arr_l; i++) {
+                arr[i] = other.arr[i];
+            }
+        };
+        TQueue& operator=(const TQueue& other) {
+            T* new_arr = new T[other.arr_l];
+            for (size_t i = 0; i < other.arr_l; i++) {
+                new_arr[i] = other.arr[i];
+            }
+            delete[] arr;
+            arr = new_arr;
+            arr_l = other.arr_l;
+            head = other.head;
+            tail = other.tail;
+            _last_push = other._last_push;
+            return *this;
+        };
         ~TQueue() {
             delete[] arr;
         };
@@ -34,17 +53,17 @@ class TQueue {
         };
         T pop() {
             _last_push = false;
+            T el = arr[head];
             head = (head + 1) % arr_l;
-            return arr[head];
+            return el;
         };
-        T getTop() const noexcept {
+        T getTop() const {
             return arr[head];
         };
         friend ostream& operator<<(ostream& stream, const TQueue<T>& queue) {
-            size_t i = queue.head;
-            while (i != queue.tail) {
-                i = (i + 1) % queue.arr_l;
-                stream << queue.arr[i] << ' ';
+            TQueue<T> tmp = queue;
+            while (!tmp.isEmpty()) {
+                stream << tmp.pop() << ' ';
             }
             return stream;
         };
